@@ -31,21 +31,21 @@ func main() {
 		time.Sleep(reportInterval)
 		for pollCount, pollData := range agentData {
 			if len(pollData) != 0 {
-				metricType := "counter"
-				metricName := "PollCount"
-				err := dispatch.SendMetrics(metricType, metricName, float64(pollCount))
-				if err != nil {
-					fmt.Printf("failed to send counter %s: %v\n", metricName, err)
-					return
-				}
-
-				metricType = "gauge"
+				metricType := "gauge"
 				for metricName, metricValue := range pollData {
 					err := dispatch.SendMetrics(metricType, metricName, metricValue)
 					if err != nil {
 						fmt.Printf("failed to send gauge %s: %v\n", metricName, err)
 						return
 					}
+				}
+
+				metricType = "counter"
+				metricName := "PollCount"
+				err := dispatch.SendMetrics(metricType, metricName, float64(pollCount))
+				if err != nil {
+					fmt.Printf("failed to send counter %s: %v\n", metricName, err)
+					return
 				}
 			}
 			clear(pollData)

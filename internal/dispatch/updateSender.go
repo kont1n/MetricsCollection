@@ -1,7 +1,6 @@
 package dispatch
 
 import (
-	"io"
 	"net/http"
 	"strconv"
 )
@@ -17,29 +16,14 @@ const (
 func SendMetrics(metricType string, metricName string, metricValue float64) error {
 	var url = serverProtocol + "://" + serverAddress + ":" + serverPort + "/" + serverPath + "/" + metricType + "/" + metricName + "/" + strconv.FormatFloat(metricValue, 'f', -1, 64)
 
-	client := &http.Client{}
-	request, err := http.NewRequest(http.MethodPost, url, nil)
+	res, err := http.Post(url, contentTypeText, nil)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	request.Header.Add("Content-Type", contentTypeText)
-
-	response, err := client.Do(request)
+	err = res.Body.Close()
 	if err != nil {
-		panic(err)
-	}
-
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(response.Body)
-
-	_, err = io.ReadAll(response.Body)
-	if err != nil {
-		panic(err)
+		return err
 	}
 
 	return nil
