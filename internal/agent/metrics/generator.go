@@ -5,7 +5,7 @@ import (
 	"runtime"
 )
 
-func CollectMetrics(agentData []map[string]float64) []map[string]float64 {
+func Collect(agentData []map[string]float64) []map[string]float64 {
 
 	gaugeMetric := make(map[string]float64)
 

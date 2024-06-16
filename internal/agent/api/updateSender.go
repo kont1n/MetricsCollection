@@ -1,4 +1,4 @@
-package dispatch
+package api
 
 import (
 	"net/http"

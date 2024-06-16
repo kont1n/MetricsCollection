@@ -1,4 +1,4 @@
-package receive
+package api
 
 import (
 	"github.com/kont1n/MetricsCollection/internal/storage"
