@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/kont1n/MetricsCollection/internal/agent"
 	"time"
 )
@@ -14,9 +13,10 @@ const (
 func main() {
 
 	a := agent.NewAgent()
+
+	a.Wg.Add(2)
 	a.CollectMetrics(pollInterval)
-	err := a.SendAllMetrics(reportInterval)
-	if err != nil {
-		fmt.Printf("failed to send metrics: %v\n", err)
-	}
+	a.SendAllMetrics(reportInterval)
+	a.Wg.Wait()
+
 }
